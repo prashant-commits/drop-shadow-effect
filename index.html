@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./styles.css"/>
+    <title>Drop shadow effect</title>
+</head>
+<body>
+      <div class="container">
+    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+      <rect width="256" height="256" fill="none" />
+      <circle fill="currentColor" cx="164" cy="156" r="12" />
+      <circle fill="currentColor" cx="92" cy="156" r="12" />
+      <path
+        d="M24,192V169.13C24,111.65,70.15,64.2,127.63,64A104,104,0,0,1,232,168v24a8,8,0,0,1-8,8H32A8,8,0,0,1,24,192Z"
+        fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
+      <line x1="32" y1="56" x2="63.07" y2="87.07" fill="none" stroke="currentColor" stroke-linecap="round"
+        stroke-linejoin="round" stroke-width="16" />
+      <line x1="224" y1="56" x2="193.1" y2="86.9" fill="none" stroke="currentColor" stroke-linecap="round"
+        stroke-linejoin="round" stroke-width="16" />
+    </svg>
+    </div>
+    <script  >
+        const icon = document.getElementById("icon");
+const r = 40;
+
+const getPointerLocationWRTElement = (element) => (event) => {
+    const elementRect = element.getBoundingClientRect();
+    const x = event.pageX;
+    const y = event.pageY;
+    const elementRightEdge = elementRect.x;
+    const elementTopEdge = elementRect.y;
+    const centerX = elementRightEdge + elementRect.width / 2;
+    const centerY = elementTopEdge + elementRect.height / 2;
+    const elementLeftEdge = elementRect.x + elementRect.width;
+    const elementBottomEdge = elementRect.y + elementRect.height;
+
+    const delX = x - centerX;
+    const delY = y - centerY;
+
+    let deg = Math.atan(delY / delX);
+    const r = Math.sqrt(delX * delX + delY * delY);
+    const getEffRadius = (num) => num / 10;
+    let effR;
+
+    if (delX < 0) {
+        deg = Math.atan(delY / delX) + Math.PI;
+    }
+
+    if (r < 200) {
+        effR = getEffRadius(r);
+    } else {
+        effR = getEffRadius(200);
+    }
+
+    icon.style.setProperty("--deg", deg.toString());
+    icon.style.setProperty("--r", effR + "px");
+
+    console.log(deg, "degree");
+};
+
+window.addEventListener("mousemove", getPointerLocationWRTElement(icon));
+    </script>
+</body>
+</html>
