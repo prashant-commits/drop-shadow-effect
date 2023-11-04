@@ -1,66 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="./styles.css"/>
-    <title>Drop shadow effect</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="./styles.css" />
+  <title>Drop shadow effect</title>
 </head>
+
 <body>
-      <div class="container">
-    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-      <rect width="256" height="256" fill="none" />
-      <circle fill="currentColor" cx="164" cy="156" r="12" />
-      <circle fill="currentColor" cx="92" cy="156" r="12" />
+  <div class="container">
+    <svg id="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256">
       <path
-        d="M24,192V169.13C24,111.65,70.15,64.2,127.63,64A104,104,0,0,1,232,168v24a8,8,0,0,1-8,8H32A8,8,0,0,1,24,192Z"
-        fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-      <line x1="32" y1="56" x2="63.07" y2="87.07" fill="none" stroke="currentColor" stroke-linecap="round"
-        stroke-linejoin="round" stroke-width="16" />
-      <line x1="224" y1="56" x2="193.1" y2="86.9" fill="none" stroke="currentColor" stroke-linecap="round"
-        stroke-linejoin="round" stroke-width="16" />
+        d="M201.54,54.46A104,104,0,0,0,54.46,201.54,104,104,0,0,0,201.54,54.46ZM190.23,65.78a88.18,88.18,0,0,1,11,13.48L167.55,119,139.63,40.78A87.34,87.34,0,0,1,190.23,65.78ZM155.59,133l-18.16,21.37-27.59-5L100.41,123l18.16-21.37,27.59,5ZM65.77,65.78a87.34,87.34,0,0,1,56.66-25.59l17.51,49L58.3,74.32A88,88,0,0,1,65.77,65.78ZM46.65,161.54a88.41,88.41,0,0,1,2.53-72.62l51.21,9.35Zm19.12,28.68a88.18,88.18,0,0,1-11-13.48L88.45,137l27.92,78.18A87.34,87.34,0,0,1,65.77,190.22Zm124.46,0a87.34,87.34,0,0,1-56.66,25.59l-17.51-49,81.64,14.91A88,88,0,0,1,190.23,190.22Zm-34.62-32.49,53.74-63.27a88.41,88.41,0,0,1-2.53,72.62Z">
+      </path>
     </svg>
-    </div>
-    <script  >
-        const icon = document.getElementById("icon");
-const r = 40;
+  </div>
+  <script>
+    const icon = document.getElementById("icon");
+    const r = 40;
 
-const getPointerLocationWRTElement = (element) => (event) => {
-    const elementRect = element.getBoundingClientRect();
-    const x = event.pageX;
-    const y = event.pageY;
-    const elementRightEdge = elementRect.x;
-    const elementTopEdge = elementRect.y;
-    const centerX = elementRightEdge + elementRect.width / 2;
-    const centerY = elementTopEdge + elementRect.height / 2;
-    const elementLeftEdge = elementRect.x + elementRect.width;
-    const elementBottomEdge = elementRect.y + elementRect.height;
+    let dx = 0;
+    let dy = 0;
 
-    const delX = x - centerX;
-    const delY = y - centerY;
+    const getPointerLocationWRTElement = (element) => (event) => {
+      const elementRect = element.getBoundingClientRect();
+      const x = event.pageX;
+      const y = event.pageY;
+      const elementRightEdge = elementRect.x;
+      const elementTopEdge = elementRect.y;
+      const centerX = elementRightEdge + elementRect.width / 2;
+      const centerY = elementTopEdge + elementRect.height / 2;
+      const elementLeftEdge = elementRect.x + elementRect.width;
+      const elementBottomEdge = elementRect.y + elementRect.height;
 
-    let deg = Math.atan(delY / delX);
-    const r = Math.sqrt(delX * delX + delY * delY);
-    const getEffRadius = (num) => num / 10;
-    let effR;
+      const delX = x - centerX;
+      const delY = y - centerY;
 
-    if (delX < 0) {
+      let deg = Math.atan(delY / delX);
+      const r = Math.sqrt(delX * delX + delY * delY);
+      const getEffRadius = (num) => num / 10;
+      let effR;
+
+      if (delX < 0) {
         deg = Math.atan(delY / delX) + Math.PI;
-    }
+      }
 
-    if (r < 200) {
+      if (r < 200) {
         effR = getEffRadius(r);
-    } else {
+      } else {
         effR = getEffRadius(200);
+      }
+
+      icon.style.setProperty("--deg", deg.toString());
+      icon.style.setProperty("--r", effR + "px");
+      // icon.style.setProperty("transition", "unset");
+
+      dx = effR * Math.cos((deg + 0 / 12));
+      dy = effR * Math.sin((deg + 0 / 12));
+
+
+    };
+
+    function degreesToRadians(degrees) {
+      return degrees * Math.PI / 180;
     }
 
-    icon.style.setProperty("--deg", deg.toString());
-    icon.style.setProperty("--r", effR + "px");
+    window.addEventListener("mousemove", getPointerLocationWRTElement(icon));
 
-    console.log(deg, "degree");
-};
 
-window.addEventListener("mousemove", getPointerLocationWRTElement(icon));
-    </script>
+    function updateAnimation(frame) {
+
+      // Set the new values to the CSS variables
+      icon.style.setProperty('--dx', dx + 'px');
+      icon.style.setProperty('--dy', dy + 'px');
+
+      // Continue the animation on the next frame
+      requestAnimationFrame(updateAnimation);
+    }
+
+    // Start the animation
+    requestAnimationFrame(updateAnimation);
+
+    if (window.CSS && CSS.registerProperty) {
+        // Register --ds-color-1
+        CSS.registerProperty({
+          name: '--ds-color-1',
+          syntax: '<color>',
+          inherits: false,
+          initialValue: '#FF6000',
+        });
+
+        // Register --ds-color-2
+        CSS.registerProperty({
+          name: '--ds-color-2',
+          syntax: '<color>',
+          inherits: false,
+          initialValue: '#FFA559',
+        });
+
+        // Register --ds-color-3
+        CSS.registerProperty({
+          name: '--ds-color-3',
+          syntax: '<color>',
+          inherits: false,
+          initialValue: '#FFE6C7',
+        });
+
+         CSS.registerProperty({
+        name: '--dx',
+        syntax: '<length>',
+        inherits: false,
+        initialValue: '0',
+      });
+
+       CSS.registerProperty({
+        name: '--dy',
+        syntax: '<length>',
+        inherits: false,
+        initialValue: '0',
+      });
+      }
+
+  </script>
 </body>
+
 </html>

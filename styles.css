@@ -43,19 +43,24 @@ code {
   --r: 40px;
   --deg: 90deg;
   --offset: 8px;
-  --dx: calc(var(--r) * cos(var(--deg)));
-  --dy: calc(var(--r) * sin(var(--deg)));
+  --w-deg: 0;
+  /* --dx: calc(var(--r) * cos(calc(var(--deg) + var(--w-deg)/12)));
+  --dy: calc(var(--r) * sin(calc(var(--deg) + var(--w-deg)/12))); */
 
-  --ds-color-1: #FF6000;
+  /* --ds-color-1: #FF6000;
   --ds-color-2: #FFA559;
-  --ds-color-3: #FFE6C7;
+  --ds-color-3: #FFE6C7; */
 
   height: 300px;
   width: 300px;
   color: #454545;
   /* transition: filter linear 0.1s; */
   animation: shadow linear infinite 8s;
-  filter: drop-shadow(calc(var(--dx)) var(--dy) 0 var(--ds-color-1)) drop-shadow(calc(var(--dx)) calc(var(--dy)) 0 var(--ds-color-2)) drop-shadow(calc(var(--dx)) calc(var(--dy)) 0 var(--ds-color-3));
+  transition: --dx 0.15s, --dy 0.15s;
+  filter: drop-shadow(var(--dx) var(--dy) 0 var(--ds-color-1)) 
+          drop-shadow(var(--dx) var(--dy) 0 var(--ds-color-2)) 
+          drop-shadow(var(--dx) var(--dy) 0 var(--ds-color-3));
+  
 }
 
 @keyframes shadow {
@@ -66,6 +71,7 @@ code {
     --ds-color-1: #FF6000;
     --ds-color-2: #FFA559;
     --ds-color-3: #FFE6C7;
+    --w-deg:0;
   }
 
   33.33% {
@@ -73,6 +79,7 @@ code {
     --ds-color-1: #9F0D7F;
     --ds-color-2: #EA1179;
     --ds-color-3: #F79BD3;
+    --w-deg:1.72;
   }
 
   66.67% {
@@ -80,5 +87,7 @@ code {
     --ds-color-1: #8062D6;
     --ds-color-2: #9288F8;
     --ds-color-3: #FFD2D7;
+    --w-deg:3.41;
   }
 }
+
